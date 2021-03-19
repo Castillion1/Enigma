@@ -1,12 +1,21 @@
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Enigma {
     private static UI enigmaUI;
+    private Rotor firstRotor;
+    private Rotor secondRotor;
+    private Rotor thirdRotor;
+    private boolean isInitialized = false;
     public Enigma() {
         SwitchBoardWiring board = SwitchBoard.getInstance();
-//        System.out.println(board.getPlugBoard());
         board.setUpTranslation('a','z');
-
+        board.setUpTranslation('f', 'e');
+        System.out.println(board.translate('a'));
+        System.out.println(board.translate('c'));
+        System.out.println(board.translate('f'));
+        System.out.println(board.translate('o'));
 //        UI tmp = new UI();
 //        tmp.makeUI();
         workOnce();
@@ -36,6 +45,18 @@ public class Enigma {
         System.out.println("firstValueRef = "+firstValueRef);
 //        enigmaUI.setTheThirdTestLabel(firstValueRef);
 
+    }
+
+    public void setUpRotors(ArrayList offsets,ArrayList Settings ){
+        if(offsets.size() != Settings.size()){
+            
+        }
+    }
+    //this function is going to be written to take a string and print out the result, until the UI is done
+    public void translate(String ToTranslate){
+        if(isInitialized==false){
+
+        }
     }
 
     public static void setEnigmaUI(UI enigmaUI) {
