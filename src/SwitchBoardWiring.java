@@ -29,7 +29,7 @@ public class SwitchBoardWiring extends EnigmaParts {
         if ((localOne == null) || (localTwo == null)) {
             throw new IllegalStateException("The letters provided is not part of the alphabet");
         }
-
+        //Test local change to ensure git is working
         localOne.setLinkedTo(localTwo);
         localTwo.setLinkedTo(localOne);
 
