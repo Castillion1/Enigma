@@ -8,7 +8,7 @@ public class EnigmaParts {
     This function takes a string and turns it into an ArrayList<Characters> to be able to make the constructor cleaner
     Allowing for a simple position and String of the rotor order
     */
-    protected ArrayList<Character> translateStringtoArrayList(String values){
+    public static ArrayList<Character> translateStringToArrayList(String values){
         String lowerCaseValues = values.toLowerCase();
         Character[] translationValues = new Character[values.length()];
         for(int i =0; i<lowerCaseValues.length(); i++){

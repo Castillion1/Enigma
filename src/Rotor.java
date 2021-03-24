@@ -8,7 +8,8 @@ public class Rotor extends  EnigmaParts {
 
     public Rotor(int startingOffset, String rotorSettings){
         this.currentOffset = startingOffset;
-        this.rotorSettings = translateStringtoArrayList(rotorSettings);
+        this.rotorSettings = translateStringToArrayList(rotorSettings);
+        System.out.println(this.rotorSettings);
     }
     /*
     In theory the method behind this will be as follows
@@ -23,7 +24,12 @@ public class Rotor extends  EnigmaParts {
 
     public Character translateCharacter(Character currentCharacter){
         int a = alphabet.indexOf(currentCharacter) + this.currentOffset;
+        System.out.println("a = "+ a + "currentCharacter = "+ currentCharacter);
         return this.rotorSettings.get(a);
+    }
+
+    public ArrayList<Character> getRotorSettings(){
+        return this.rotorSettings;
     }
 
     //Rotate the rotor

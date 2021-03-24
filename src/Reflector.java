@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Reflector extends EnigmaParts {
     private final ArrayList<Character> reflectorSettings;
     public Reflector(String reflections){
-        this.reflectorSettings = translateStringtoArrayList(reflections);
+        this.reflectorSettings = translateStringToArrayList(reflections);
     }
 
     public Character translateCharacter(Character currentCharacter){
