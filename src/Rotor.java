@@ -1,15 +1,17 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class Rotor extends  EnigmaParts {
+public class Rotor extends  TranslationContext {
     private ArrayList<Character> rotorSettings = new ArrayList<>();
+    private ArrayList<TranslationPair> translations= new ArrayList<>();
+    private TranslationContext localContext = new TranslationContext();
     private int currentOffset = 0;
 
     public Rotor(int startingOffset, String rotorSettings){
         this.currentOffset = startingOffset;
         this.rotorSettings = translateStringToArrayList(rotorSettings);
-        System.out.println(this.rotorSettings);
+        localContext.make(this.rotorSettings);
+        setUpTranslations(false);
+//        testTranslations();
     }
     /*
     In theory the method behind this will be as follows
@@ -19,22 +21,42 @@ public class Rotor extends  EnigmaParts {
      A user gives it a value that needs to be translated.
      The code will then find out what value that is in the static array and then will use that number to find
      its translation. once this is done the currentOffset will increment by 1 to simulate the turning of a rotor
+     This is going to be actually done via translation pairs. To link each letter to another.
 
      */
+    private void testTranslations(){
+        for(int i =0; i < alphabet.size(); i++){
+            Character local = localContext.translateForward(alphabet.get(i),this.currentOffset, true);
+        }
+    }
+    private void setUpTranslations(boolean twoWay){
+        for(int i =0; i < alphabet.size(); i++){
+            this.localContext.setUpTranslation(alphabet.get(i),this.rotorSettings.get(i), twoWay);
+        }
+    }
 
-    public Character translateCharacter(Character currentCharacter){
-        int a = alphabet.indexOf(currentCharacter) + this.currentOffset;
-        System.out.println("a = "+ a + "currentCharacter = "+ currentCharacter);
-        return this.rotorSettings.get(a);
+    //Needs to be changed. This is old
+    public char translateCharacterForward(char currentCharacter, boolean encrypt){
+        return this.localContext.translateForward(currentCharacter, this.currentOffset, encrypt);
+    }
+
+    public char translateCharacterBackwards(char currentCharacter, boolean encrypt){
+        return this.localContext.translateBackwards(currentCharacter, this.currentOffset, encrypt);
     }
 
     public ArrayList<Character> getRotorSettings(){
         return this.rotorSettings;
     }
 
+    public int getCurrentOffset(){
+        return this.currentOffset;
+    }
+    public void reset(){
+        this.currentOffset = 0;
+    }
     //Rotate the rotor
     public boolean rotate(){
-        if(this.currentOffset == 25){
+        if(this.currentOffset == (alphabet.size()-1)){
             this.currentOffset = 0;
             return true;
         }

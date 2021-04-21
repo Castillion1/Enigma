@@ -1,9 +1,9 @@
-public class Plug {
-    private Plug LinkedTo = null;
+public class TranslationPair {
+    private TranslationPair LinkedTo = null;
     private final Character Letter;
     private int LinkerToIndex;
 
-    public Plug(Character letter) {
+    public TranslationPair(Character letter) {
         this.Letter = letter;
     }
 
@@ -11,7 +11,7 @@ public class Plug {
         return this.Letter;
     }
 
-    public Plug getLinkedTo() {
+    public TranslationPair getLinkedTo() {
         if(this.LinkedTo == null){
             return this;
         }else{
@@ -22,7 +22,7 @@ public class Plug {
 
     public int getLinkerToIndex(){ return this.LinkerToIndex;}
 
-    public void setLinkedTo(Plug linkedTo) {
+    public void setLinkedTo(TranslationPair linkedTo) {
         this.LinkedTo = linkedTo;
     }
 
