@@ -6,12 +6,13 @@ public class UI extends JFrame {
     private JLabel SecondRotor;
     private JFrame screen;
     private JButton translate;
-    private JButton TempButton;
     private JTextField input;
     private int WholePageWidth = 1000;
     private int WholePageHeight = 1000;
     private int ButtonWidth = 150;
     private int ButtonHeight = 150;
+    private TextArea InputTextField;
+    private JToggleButton encryptOrDecrypt;
 
     public UI() {
         super("Test Title");
@@ -25,30 +26,30 @@ public class UI extends JFrame {
 
         this.screen.setLayout(Layout);
         this.translate = new JButton("Translate");
+        EnigmaListener listener = new EnigmaListener();
+        this.translate.addActionListener(listener);
         this.translate.setLayout(null);
         this.screen.add(this.translate);
 
-        this.TempButton = new JButton("Translate");
+//        this.TempButton = new JButton("Translate");
 
-        this.screen.add(this.TempButton);
+//        this.screen.add(this.TempButton);
+        this.InputTextField  = new TextArea("Sample text for translation",1,1, 1);
 
+        this.screen.add(InputTextField);
 
-//        this.screen.pack();
+        this.encryptOrDecrypt = new JToggleButton("Encrypt");
+        this.screen.add(this.encryptOrDecrypt);
         this.screen.setVisible(true);
-//        System.out.println("I'm going to try and make a UI");
-//        int numberOfRotors = 3;
-//        this.ThirdRotor = new JLabel("Rotor Test");
-//        JLabel[] labelArray = new JLabel[numberOfRotors - 3];//Why -3?
-//        if(numberOfRotors > 3){
-//            for (int i = 0; i < (numberOfRotors - 3); i++) {
-//                labelArray[i] = new JLabel(Integer.toString(i));
-//                TestPanel.add(labelArray[i]);
-//            }
-//        }
-//
-//        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        this.setContentPane(TestPanel);
-//        this.pack();
+
+    }
+
+    public TextArea getInputTextField(){
+        return this.InputTextField;
+    }
+
+    public boolean getEncryptOrDecrypt(){
+        return this.encryptOrDecrypt.isSelected();
     }
 
     public void setTheThirdTestLabel(int value) {

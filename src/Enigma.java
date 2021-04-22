@@ -11,6 +11,8 @@ public class Enigma {
     private int initialCapacity = 3;
 
     public Enigma() {
+        UI UserInterface = new UI();
+        UserInterface.makeUI();
 //        SwitchBoardWiring board = SwitchBoard.getInstance();
 //        board.setUpTranslation('a','z');
 //        board.setUpTranslation('f', 'e');
@@ -52,10 +54,9 @@ public class Enigma {
         setUpRotors(offsets, settings);
 
 //        translate("my name is callum this is a very long bit of text to try and test the code blahhhhhhhhhh general bit of jibberish", true);
-        translate("bp mgww rh wnmcel pzpg hh y xhgy kxyt nps ig fkyj up xhk elv slgl gpm oljy qanieptylehes cvkjrzk fnv rz ijffluytb", false);
+//        translate("bp mgww rh wnmcel pzpg hh y xhgy kxyt nps ig fkyj up xhk elv slgl gpm oljy qanieptylehes cvkjrzk fnv rz ijffluytb", false);
+        translate(UserInterface.getInputTextField().getText(), UserInterface.getEncryptOrDecrypt());
 
-//        UI tmp = new UI();
-//        tmp.makeUI();
     }
     private void resetRotors(){
         for(int i = 0; i < this.rotors.size();i++){
