@@ -1,24 +1,24 @@
 import java.util.ArrayList;
 
 public class Enigma {
-    private static UI enigmaUI;
-    //    private Reflector reflector = new Reflector("QYHOGNECVPUZTFDJAXWMKISRBL");
-//    private Reflector reflector = new Reflector("LEYJVCNIXWPBQMDRTAKZGFUHOS");
+    private static MainUI enigmaUI = new MainUI();
+    private static RotorSelectionUI rotorSelectionUI = new RotorSelectionUI();
     private Reflector reflector = new Reflector("YRUHQSLDPXNGOKMIEBFZCWVJAT");
-    //                                                   "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private ArrayList<Rotor> rotors;
-    private boolean isInitialized = false;
+    private ArrayList<Integer> offsets;
+    private ArrayList<String> settings;
+    private static boolean isInitialized = false;
     private int initialCapacity = 3;
 
     public Enigma() {
-        UI UserInterface = new UI();
-        UserInterface.makeUI();
+        rotorSelectionUI.make();
+
 //        SwitchBoardWiring board = SwitchBoard.getInstance();
 //        board.setUpTranslation('a','z');
 //        board.setUpTranslation('f', 'e');
 
-        ArrayList<Integer> offsets = new ArrayList<>(initialCapacity);
-        ArrayList<String> settings = new ArrayList<>(initialCapacity);
+        this.offsets = new ArrayList<>(initialCapacity);
+        this.settings = new ArrayList<>(initialCapacity);
 
         offsets.add(0);
         offsets.add(0);
@@ -55,16 +55,24 @@ public class Enigma {
 
 //        translate("my name is callum this is a very long bit of text to try and test the code blahhhhhhhhhh general bit of jibberish", true);
 //        translate("bp mgww rh wnmcel pzpg hh y xhgy kxyt nps ig fkyj up xhk elv slgl gpm oljy qanieptylehes cvkjrzk fnv rz ijffluytb", false);
-        translate(UserInterface.getInputTextField().getText(), UserInterface.getEncryptOrDecrypt());
 
     }
-    private void resetRotors(){
+
+    public static void makeMainUI(){
+        enigmaUI.makeMainUI();
+    }
+
+    public static MainUI getEnigmaUI(){
+        return enigmaUI;
+    }
+
+    public void resetRotors(){
         for(int i = 0; i < this.rotors.size();i++){
             this.rotors.get(i).reset();
         }
     }
 
-    public static void setEnigmaUI(UI enigmaUI) {
+    public static void setEnigmaUI(MainUI enigmaUI) {
         Enigma.enigmaUI = enigmaUI;
     }
 
@@ -76,27 +84,30 @@ public class Enigma {
             for (int i = 0; i < offsets.size(); i++) {
                 this.rotors.add(i, new Rotor(offsets.get(i), Settings.get(i)));
             }
-            this.isInitialized = true; // the rotors have been setup now
+            isInitialized = true; // the rotors have been setup now
         }
     }
 
-    //this function is going to be written to take a string and print out the result, until the UI is done
-    public void translate(String ToTranslate, boolean encrypt) {
+    public String translate(String ToTranslate, boolean encrypt, boolean outputString) {
 
-        if (this.isInitialized == true) {
+        if (isInitialized == true) {
             char[] characters = null;
             ArrayList<Character> inputCharacters = EnigmaParts.translateStringToArrayList(ToTranslate);
             StringBuilder output = new StringBuilder("");
             for (int j = 0; j < inputCharacters.size(); j++) {
                 output.append(letterTranslate(inputCharacters.get(j), encrypt));
-                System.out.println();
             }
-            System.out.println(output);
+
+            if(outputString){
+                System.out.println(output.toString());
+            }
+           return output.toString();
         }
+        return "";//Nothing should be returned.
     }
 
     private char letterTranslate(char charToTranslate, boolean encrypt) {
-        boolean debug = true;
+        boolean debug = false;
         rotateRotors();
         if(debug){
             System.out.println("rotor offset = "+this.rotors.get(0).getCurrentOffset());

@@ -1,7 +1,11 @@
 public class Start {
+    private static Enigma machine;
     public static void main(String[] args) {
-        Enigma machine = new Enigma();
+        machine = new Enigma();
 
-//        machine.workOnce();
+    }
+
+    public static Enigma getMachine(){
+        return machine;
     }
 }

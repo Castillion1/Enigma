@@ -5,8 +5,10 @@ public class Rotor extends  TranslationContext {
     private ArrayList<TranslationPair> translations= new ArrayList<>();
     private TranslationContext localContext = new TranslationContext();
     private int currentOffset = 0;
+    private int startingOffset;
 
     public Rotor(int startingOffset, String rotorSettings){
+        this.startingOffset = startingOffset;
         this.currentOffset = startingOffset;
         this.rotorSettings = translateStringToArrayList(rotorSettings);
         localContext.make(this.rotorSettings);
@@ -52,7 +54,7 @@ public class Rotor extends  TranslationContext {
         return this.currentOffset;
     }
     public void reset(){
-        this.currentOffset = 0;
+        this.currentOffset = this.startingOffset;
     }
     //Rotate the rotor
     public boolean rotate(){

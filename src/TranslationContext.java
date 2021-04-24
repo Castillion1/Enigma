@@ -35,9 +35,6 @@ public class TranslationContext extends EnigmaParts {
     }
     private int localIndexChange(int localIndex,int offset, boolean encrypt ){
         if(encrypt){
-
-//                System.out.println("Offset = "+offset);
-//                System.out.println("localIndex = "+localIndex);
             if(localIndex+offset>25){//this method of doing the offset is wrong
                 localIndex = (localIndex+offset) - alphabet.size();
             }else{
@@ -45,14 +42,8 @@ public class TranslationContext extends EnigmaParts {
             }
         }else{
             if((localIndex-offset)<0){
-//                System.out.println("Offset = "+offset);
-//                System.out.println("localIndex = "+localIndex);
-//                System.out.println("Together = "+(25-Math.abs(localIndex-offset)));
                 localIndex =alphabet.size() - Math.abs(localIndex-offset);
             }else{
-//                System.out.println("Offset = "+offset);
-//                System.out.println("localIndex = "+localIndex);
-//                System.out.println("Together = "+(Math.abs(localIndex-offset)));
                 localIndex = Math.abs(localIndex - offset);
             }
         }
