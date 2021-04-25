@@ -22,7 +22,7 @@ public class MainUI extends UIPages {
     private JToggleButton encryptOrDecrypt;
 
     public MainUI() {
-        super("Test Title");
+        super();
     }
 
 
