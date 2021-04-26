@@ -6,11 +6,13 @@ public class Rotor extends  TranslationContext {
     private TranslationContext localContext = new TranslationContext();
     private int currentOffset = 0;
     private int startingOffset;
+    private int notchPosition = 0;
 
-    public Rotor(int startingOffset, String rotorSettings){
+    public Rotor(int startingOffset, String rotorSettings, int notchPosition){
         this.startingOffset = startingOffset;
         this.currentOffset = startingOffset;
         this.rotorSettings = translateStringToArrayList(rotorSettings);
+        this.notchPosition = notchPosition;
         localContext.make(this.rotorSettings);
         setUpTranslations(false);
 //        testTranslations();

@@ -20,7 +20,6 @@ public abstract class UIPages extends JFrame {
         GridLayout layout = new GridLayout(rows,cols,hGap,vGap);
         screen.setLayout(layout);
         return screen;
-
     }
 
     public JTabbedPane makeRotorSelectionScreen(String title, int rows, int cols){//Make the rotor selection screen

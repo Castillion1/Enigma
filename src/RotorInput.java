@@ -1,18 +1,19 @@
-import java.util.Arrays;
-
-public class RotorInput {
+public class RotorInput{
     private final String Name;
     private final String Setting;
     private final String Date;
     private final String UsedFor;
 
 
-    public RotorInput(String lineOfThree){
-        String[] lineSplit = lineOfThree.split(",");
+
+    public RotorInput(String fullLine){
+        String[] lineSplit = fullLine.split(",");
         this.Name = lineSplit[0];
         this.Setting = lineSplit[1];
         this.Date = lineSplit[2];
         this.UsedFor = lineSplit[3];
+
+
     }
 
     public String getDate() {
@@ -30,4 +31,5 @@ public class RotorInput {
     public String getUsedFor() {
         return UsedFor;
     }
+
 }

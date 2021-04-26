@@ -1,7 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Locale;
 
 public class RotorSelectionUI extends UIPages {
     private static boolean hasSelectedRotors = false;
@@ -10,63 +16,181 @@ public class RotorSelectionUI extends UIPages {
     private JComponent IntroductionPanel;
     private JComponent NumberOfRotorComponent;
     private JComponent SelectionOfSettings;
-    private ArrayList<RotorInput> Rotors = new ArrayList<>();
+    private JComponent switchBoardTab;
+    private JComponent encryptTab;
+    private TextArea switchBoardInput;
+    private TextArea encryptInput;
+    private TextArea encryptOutput;
+    private JButton encrypt;
+    private ArrayList<RotorInput> rotors = new ArrayList<>();
+    private ArrayList<ScreenComboBox> rotorSettings = new ArrayList<>();
+    private ArrayList<ScreenComboBox> rotorOffsets = new ArrayList<>();
+    private RotorSelectionScreen rotorSelection;
+
 
     public RotorSelectionUI(){
         super();
     }
 
-    public void make (){
+    public void make(){
         this.screen = new JFrame("Enigma Machine Simulator");//Title for the whole thing
-        this.screen.setMinimumSize(new Dimension(500,500));
+        this.screen.setMinimumSize(new Dimension(750,500));
         this.tabbedPane = makeRotorSelectionScreen("Rotor Selection", 1, 1);
-        this.IntroductionPanel = makeTextPanel("This is a test", 1 ,1);//TODO add some introduction text
-        ArrayList<String> rotorSettings = readRotorSettings();
+        this.IntroductionPanel = makeTextPanel("<html><p>This is an Engima machine simulator, it does allow you to" +
+                " reconstruct the initial machine using 3 rotors but it also allows you to use as many rotors as you like" +
+                " and pair rotors from different machines up</p></html>", 1 ,1);//TODO improve introduction text
 
-
-        for(int i = 0; i<rotorSettings.size()-1; i++){
-            Rotors.add(new RotorInput(rotorSettings.get(i)));
-        }
-        RotorSelectionScreen rotorSelection = new RotorSelectionScreen("Please select how many rotors you would like to use");
-        this.NumberOfRotorComponent = rotorSelection.makeRotorSettingsSelectionPanel(3 ,1, makeUpTo(rotorSettings.size()));
-
-        rotorSelection.getComboBox().addActionListener(e -> {
-            if(this.SelectionOfSettings!=null){
-                this.screen.remove(this.SelectionOfSettings);
-            }
-            this.SelectionOfSettings = makeSelectionOfSettings(rotorSelection,"Please select the settings for each rotor");
-            if(this.tabbedPane.getTabCount()>0){
-                this.tabbedPane.remove(2);
-                this.tabbedPane.addTab("Please select the settings for your rotors", SelectionOfSettings);
-                this.screen.pack();
-            }
-
-        });
-
-        if(rotorSelection.getComboBox()!=null){
-            rotorSelection.getComboBox().setSelectedIndex(2);//2 selects the '3' option the default for the enigma machine
+        makeSelectionOfSettingsStarter();
+        makeSwitchBoardTab();
+        makeEncryptTab();
+        if(this.rotorSelection.getComboBox()!=null){
+            this.rotorSelection.getComboBox().setSelectedIndex(2);//2 selects the '3' option the default for the enigma machine
         }
 
-        this.tabbedPane.addTab("Introduction", IntroductionPanel);
-        this.tabbedPane.addTab("How many rotors would you like to use?", NumberOfRotorComponent);
-        this.tabbedPane.addTab("Please select the settings for your rotors", SelectionOfSettings);
-
+        this.tabbedPane.addTab("Introduction", this.IntroductionPanel);
+        this.tabbedPane.addTab("How many rotors would you like to use?", this.NumberOfRotorComponent);
+        this.tabbedPane.addTab("Please select the settings", this.SelectionOfSettings);
+        this.tabbedPane.addTab("Switch board set-up", this.switchBoardTab);
+        this.tabbedPane.addTab("Encrypt a message",this.encryptTab);
 
         this.tabbedPane.addChangeListener(e ->
-                System.out.println("Tab ="+ tabbedPane.getSelectedIndex() + " is selected")
+                System.out.println("Tab ="+ this.tabbedPane.getSelectedIndex() + " is selected")
         );
 
         this.screen.add(this.tabbedPane);
         this.screen.setVisible(true);// needs to be the last thing in this class, otherwise causing visual glitches
 
     }
+    private void makeEncryptTab(){
+        this.encryptTab = new JPanel(false);
+        this.encryptTab.setLayout(new GridLayout(5,1));
+        JLabel EncryptMessage = new JLabel("<html><p>Please enter a message </p></html>");
+        EncryptMessage.setVerticalAlignment(SwingConstants.BOTTOM);
+        EncryptMessage.setHorizontalAlignment(SwingConstants.LEFT);
+        this.encryptTab.add(EncryptMessage);
+        this.encryptInput = new TextArea();
+        this.encryptTab.add(this.encryptInput);
+        JLabel OutputLabel =  new JLabel("Output: ");
+        OutputLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        OutputLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        this.encryptTab.add(OutputLabel);
+        this.encryptOutput = new TextArea();
+        this.encryptTab.add(this.encryptOutput);
+        this.encrypt = new JButton("Encrypt");
+        this.encrypt.addActionListener(e ->{
+            ArrayList<Integer> localOffsets = new ArrayList<>();
+            for(int i=0; i<rotorOffsets.size();i++){
+                localOffsets.add((Integer) rotorOffsets.get(i).getComboBox().getSelectedItem());
+                System.out.println(rotorOffsets.get(i).getComboBox().getSelectedItem());
+            }
+            ArrayList<String> localSettings = new ArrayList<>();
+            for(int k=0; k<rotorSettings.size();k++){
+                String localCompare = (String) rotorSettings.get(k).getComboBox().getSelectedItem();
+                localCompare = localCompare.replaceAll("\\s+", "");
+                String[] localCompareArray =localCompare.split(",");
+                String localSetting = localCompareArray[2];
+                localSettings.add(localSetting);
+//                for(int j = 0; j<rotors.size();j++){
+//                    localSettings.add(rotors.get(j).getSetting());
+//                    System.out.println(rotors.get(j).getSetting());
+//                }
+
+            }
+            ArrayList<Integer> notchPostions = new ArrayList<>();
+            for(int l =0; l<26; l++){
+                notchPostions.add(0);
+            }
+//            ArrayList<Integer> offsets =
+
+//            Enigma machine = new Enigma(localOffsets, localSettings,notchPostions, ,SwitchBoard.getInstance());
+        });//this is going to be quite long
+        this.encryptTab.add(this.encrypt);
+
+
+
+    }
+    private void makeSwitchBoardTab(){
+        this.switchBoardTab = new JPanel(false);
+        this.switchBoardTab.setLayout(new GridLayout(3,1));
+        this.switchBoardTab.add(new JLabel("<html><p>Please enter your switchboard settings, this can be done by simply entering" +
+                ", for example AB CD will then link A to B and so on, vice versa.</p></html>"));
+        this.switchBoardInput = new TextArea();
+        JButton confirmButton = new JButton("Confirm rotor settings");
+        confirmButton.addActionListener(e -> {
+            if(checkSwitchBoardInput(switchBoardInput.getText())){
+                setUpSwitchBoard(switchBoardInput.getText());
+            }
+        });
+
+        this.switchBoardTab.add(switchBoardInput);
+        this.switchBoardTab.add(confirmButton);
+
+    }
+//IJ LM AB CD EF GH
+    private void setUpSwitchBoard(String input){
+        input = input.toLowerCase();
+        String[] inputArray = input.split(" ");
+        TranslationContext switchBoard = SwitchBoard.getInstance();
+        for(int i =0; i<inputArray.length; i++){
+            String[] splitChars = inputArray[i].split("");
+            Character firstChar = splitChars[0].charAt(0);
+            Character secondChar = splitChars[1].charAt(0);
+            switchBoard.setUpTranslation(firstChar, secondChar, true);
+        }
+
+    }
+
+    private boolean checkSwitchBoardInput(String input){
+        input = input.replaceAll("\\s+", "");
+        input = input.toLowerCase();
+        char[] inputChar = input.toCharArray();
+        Arrays.sort(inputChar);
+        String sorted = new String(inputChar);
+        String[] sortedArray = sorted.split("");
+        ArrayList<String> sortedArrayList = new ArrayList<String>(Arrays.asList(sortedArray));//sorted into the right order
+        for(int i =0; i < sortedArrayList.size()-1; i++){
+            if(sortedArrayList.get(i).equals(sortedArrayList.get(i+1))){
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    private void makeSelectionOfSettingsStarter(){
+        ArrayList<String> rotorSettings = readRotorSettings();
+
+
+        for(int i = 0; i<rotorSettings.size()-1; i++){
+            rotors.add(new RotorInput(rotorSettings.get(i)));
+        }
+
+        this.rotorSelection = new RotorSelectionScreen("Please select how many rotors you would like to use");
+        this.NumberOfRotorComponent = rotorSelection.makeRotorSettingsSelectionPanel(3 ,1, makeUpTo(rotorSettings.size()));
+
+        rotorSelection.getComboBox().addActionListener(e -> {
+            if(this.SelectionOfSettings!=null){
+                this.screen.remove(this.SelectionOfSettings);
+            }
+            this.SelectionOfSettings = makeSelectionOfSettings(rotorSelection,"Please select the settings");
+            if(this.tabbedPane.getTabCount()>0){
+                this.tabbedPane.remove(2);
+                this.tabbedPane.addTab("Please select the settings", SelectionOfSettings);
+//                this.screen.pack();
+            }
+
+        });
+    }
 
     private JComponent makeSelectionOfSettings(RotorSelectionScreen rotorSelection, String text) {
-        int W = 1;
+        int W = 4;
         int H = Integer.parseInt(rotorSelection.getComboBox().getItemAt(rotorSelection.getComboBox().getSelectedIndex()).toString());
         ArrayList<String> options = getOptions();
         JPanel panel = new JPanel(false);
-
+        Integer[] listOfOffsets = new Integer[26];
+        for(int i = 0; i< listOfOffsets.length; i++){
+            listOfOffsets[i] = i;
+        }
         JLabel DescriptionLabel = new JLabel(text);
         panel.add(DescriptionLabel);
         DescriptionLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -74,14 +198,27 @@ public class RotorSelectionUI extends UIPages {
         panel.setLayout(new GridLayout(H+1,W,10,10));
 
         panel.add(DescriptionLabel);
-        String fillerLabelText = "H";
-        panel.add(new JLabel(fillerLabelText));//filler label
+        String fillerLabelText = ""; //helps debug //TODO remove later
+        for(int j = 0; j<W-1; j++){
+            panel.add(new JLabel(fillerLabelText));//filler label
+        }
 
         for(int i =0; i<H; i ++){
             int j = i +1;
-//            panel.add(new JLabel(fillerLabelText));//filler label
-            panel.add(new JLabel("Rotor " + j));
-            panel.add(new JComboBox<>(options.toArray()));
+            panel.add(new JLabel("Rotor: " + j));
+            JComboBox currentSetting = new JComboBox(options.toArray());
+            int localSearch = 0;
+
+            this.rotorSettings.add(new ScreenComboBox(currentSetting,i));
+            panel.add(currentSetting);
+
+            JLabel offsetLabel = new JLabel("Rotor Offset: ");
+            offsetLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+            panel.add(offsetLabel);
+
+            JComboBox currentOffset = new JComboBox(listOfOffsets);
+            this.rotorOffsets.add(new ScreenComboBox(currentOffset, i));
+            panel.add(currentOffset);
 
         }
         return panel;
@@ -89,9 +226,9 @@ public class RotorSelectionUI extends UIPages {
 
     private ArrayList<String> getOptions(){
         ArrayList<String> output = new ArrayList<>();
-        for(int i =0; i<this.Rotors.size();i++){
-            RotorInput tmp  = this.Rotors.get(i);
-            output.add(tmp.getName()+" ," + tmp.getDate() + " ," + tmp.getUsedFor());
+        for(int i =0; i<this.rotors.size();i++){
+            RotorInput tmp  = this.rotors.get(i);
+            output.add(tmp.getName()+" ," + tmp.getUsedFor() + " ," + tmp.getSetting());
         }
         return output;
     }

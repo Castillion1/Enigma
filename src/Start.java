@@ -1,11 +1,10 @@
 public class Start {
     private static Enigma machine;
+    private RotorSelectionUI rotorSelectionUI;
     public static void main(String[] args) {
-        machine = new Enigma();
 
-    }
+        RotorSelectionUI UI = new RotorSelectionUI();
+        UI.make();
 
-    public static Enigma getMachine(){
-        return machine;
     }
 }

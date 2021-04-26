@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class TranslationContext extends EnigmaParts {
     private final ArrayList<TranslationPair> context = new ArrayList<>();
     private ArrayList<Character> settings = new ArrayList<>();
+
     public void make(ArrayList<Character> settings) {
         this.settings = settings;
         for (int i = 0; i < alphabet.size(); i++) {
@@ -19,6 +20,10 @@ public class TranslationContext extends EnigmaParts {
 
     public ArrayList<TranslationPair> getContext() {
         return this.context;
+    }
+
+    public ArrayList<Character> getSettings(){
+        return this.settings;
     }
 
     public char translateForward(Character ToTranslate, int offset, boolean encrypt){
@@ -59,13 +64,7 @@ public class TranslationContext extends EnigmaParts {
                 localIndexStore = i;
             }
         }
-        //this means i lose the two way path that needs to be made
-        //make an encrypt/decrypt toggle
-        //this will need to flip how it works with the offset i.e encrypt will add and decypt will take away
-//        System.out.println(ToTranslate);
-//        System.out.println(this.context.get(localIndexStore).getLinkedTo().getLetter());
         localIndexStore = localIndexChange(localIndexStore, offset, encrypt);
-
         return this.context.get(localIndexStore).getLetter();
     }
 

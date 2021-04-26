@@ -1,69 +1,31 @@
 import java.util.ArrayList;
 
 public class Enigma {
-    private static MainUI enigmaUI = new MainUI();
+
     private static RotorSelectionUI rotorSelectionUI = new RotorSelectionUI();
-    private Reflector reflector = new Reflector("YRUHQSLDPXNGOKMIEBFZCWVJAT");
+    private Reflector reflector;
     private ArrayList<Rotor> rotors;
+    private SwitchBoard board;
     private ArrayList<Integer> offsets;
     private ArrayList<String> settings;
     private static boolean isInitialized = false;
-    private int initialCapacity = 3;
 
-    public Enigma() {
-        rotorSelectionUI.make();
+    public Enigma(ArrayList<Integer> offsets, ArrayList<String> settings,ArrayList<Integer> notchPositions , Reflector reflector, SwitchBoard board) {
+//        rotorSelectionUI.make();
 
 //        SwitchBoardWiring board = SwitchBoard.getInstance();
 //        board.setUpTranslation('a','z');
 //        board.setUpTranslation('f', 'e');
 
-        this.offsets = new ArrayList<>(initialCapacity);
-        this.settings = new ArrayList<>(initialCapacity);
-
-        offsets.add(0);
-        offsets.add(0);
-        offsets.add(0);
-//        offsets.add(0);
-//        offsets.add(0);
-        //stepping in is correct. going back needs some more work to figure out how it got there
-        //where to go from a translated value.
-        //The paths to complete the translation work in 1 direction but when trying to go the other way
-        //they hit faults and this leads to the message not decoding
-        //for example, rotor 1, has a D, in the C position
-        //might need to chang te whole idea, or might need to figure out how to get a chac
-
-//                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-//        settings.add("EKMFLGDQVZNTOWYHXUSPAIBRCJ");//Rotor 0
-//                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-//        settings.add("AJDKSIRUXBLHWTMCQGZNPYFVOE");//Rotor 1
-//                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-//        settings.add("BDFHJLCPRTXVZNYEIWGAKMUSQO");//Rotor 2
-
-
-//                   "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        settings.add("EKMFLGDQVZNTOWYHXUSPAIBRCJ");//Rotor 2
-//                   "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        settings.add("AJDKSIRUXBLHWTMCQGZNPYFVOE");//Rotor 1
-//                   "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        settings.add("BDFHJLCPRTXVZNYEIWGAKMUSQO");//Rotor 0
-//                   "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-//                   "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-//                    YRUHQSLDPXNGOKMIEBFZCWVJAT   //Reflector
-//                   "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        setUpRotors(offsets, settings);
+        this.offsets = offsets;
+        this.settings =  settings;
+        this.reflector = reflector;
+        this.board = board;
+        setUpRotors(offsets, settings, notchPositions);
 
 //        translate("my name is callum this is a very long bit of text to try and test the code blahhhhhhhhhh general bit of jibberish", true);
 //        translate("bp mgww rh wnmcel pzpg hh y xhgy kxyt nps ig fkyj up xhk elv slgl gpm oljy qanieptylehes cvkjrzk fnv rz ijffluytb", false);
 
-    }
-
-    public static void makeMainUI(){
-        enigmaUI.makeMainUI();
-    }
-
-    public static MainUI getEnigmaUI(){
-        return enigmaUI;
     }
 
     public void resetRotors(){
@@ -72,17 +34,13 @@ public class Enigma {
         }
     }
 
-    public static void setEnigmaUI(MainUI enigmaUI) {
-        Enigma.enigmaUI = enigmaUI;
-    }
-
-    public void setUpRotors(ArrayList<Integer> offsets, ArrayList<String> Settings) {
+    public void setUpRotors(ArrayList<Integer> offsets, ArrayList<String> Settings, ArrayList<Integer> notchPositions) {
         if (offsets.size() != Settings.size()) {
             throw new IllegalArgumentException("There is a problem with the offsets and settings");
         } else {
             this.rotors = new ArrayList<>(Settings.size());
             for (int i = 0; i < offsets.size(); i++) {
-                this.rotors.add(i, new Rotor(offsets.get(i), Settings.get(i)));
+                this.rotors.add(i, new Rotor(offsets.get(i), Settings.get(i), notchPositions.get(i)));
             }
             isInitialized = true; // the rotors have been setup now
         }
@@ -109,6 +67,7 @@ public class Enigma {
     private char letterTranslate(char charToTranslate, boolean encrypt) {
         boolean debug = false;
         rotateRotors();
+        this.board.translate(charToTranslate);
         if(debug){
             System.out.println("rotor offset = "+this.rotors.get(0).getCurrentOffset());
         }
@@ -150,6 +109,7 @@ public class Enigma {
                 System.out.println("local after = " + local);
             }
         }
+        this.board.translate(local);
         return local;
     }
 

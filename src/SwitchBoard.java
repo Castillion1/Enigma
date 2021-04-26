@@ -14,5 +14,9 @@ public class SwitchBoard extends TranslationContext {
         return instance;
     }
 
+    public char translate(Character input){
+        return instance.translateForward(input, 0 ,true);
+    }
+
 
 }
