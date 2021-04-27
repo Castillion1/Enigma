@@ -9,14 +9,10 @@ public class SwitchBoard extends TranslationContext {
         if (instance == null) {
             instance = new TranslationContext();
             instance.make();
+
         }
 
         return instance;
     }
-
-    public char translate(Character input){
-        return instance.translateForward(input, 0 ,true);
-    }
-
 
 }

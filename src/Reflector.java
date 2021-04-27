@@ -13,7 +13,6 @@ public class Reflector extends TranslationContext {
 
     public Character translateCharacter(Character currentCharacter){
         return this.localContext.translateForward(currentCharacter, 0, true);
-//        return this.reflectorSettings.get(alphabet.indexOf(currentCharacter));
     }
     private void setUpTranslations(){
         for(int i=0; i< alphabet.size(); i++ ){

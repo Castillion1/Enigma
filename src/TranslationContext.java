@@ -29,18 +29,20 @@ public class TranslationContext extends EnigmaParts {
     public char translateForward(Character ToTranslate, int offset, boolean encrypt){
 
         int localIndexStore = 0;
+        System.out.println("Before Translation = "+ToTranslate);
+        Character newFinding = alphabet.get(localIndexChange(alphabet.indexOf(ToTranslate), offset, encrypt));//coming in rotation
         for(int i =0; i < alphabet.size();i++){
-            if(alphabet.get(i).equals(ToTranslate)){
+            if(alphabet.get(i).equals(newFinding)){
                 localIndexStore = i;
             }
         }
-        localIndexStore = localIndexChange(localIndexStore, offset, encrypt);
+        localIndexStore = localIndexChange(localIndexStore, offset, encrypt); //leaving rotation
         return this.context.get(localIndexStore).getLinkedTo().getLetter();
 
     }
     private int localIndexChange(int localIndex,int offset, boolean encrypt ){
         if(encrypt){
-            if(localIndex+offset>25){//this method of doing the offset is wrong
+            if(localIndex+offset>25){//TODO this method of doing the offset is wrong
                 localIndex = (localIndex+offset) - alphabet.size();
             }else{
                 localIndex = localIndex+offset;
@@ -57,10 +59,9 @@ public class TranslationContext extends EnigmaParts {
 
     public char translateBackwards(Character ToTranslate, int offset, boolean encrypt){
         int localIndexStore = 0;
-//        System.out.println();
-        //there might be a nicer way by changing this loop. making it take into account the offset straight away?
+        Character newFinding = alphabet.get(localIndexChange(alphabet.indexOf(ToTranslate), offset, encrypt));//coming in rotation
         for(int i =0; i < alphabet.size();i++){
-            if(this.context.get(i).getLinkedTo().getLetter().equals(ToTranslate)){
+            if(this.context.get(i).getLinkedTo().getLetter().equals(newFinding)){
                 localIndexStore = i;
             }
         }
@@ -100,4 +101,5 @@ public class TranslationContext extends EnigmaParts {
 
 
     }
+
 }

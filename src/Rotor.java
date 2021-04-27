@@ -39,7 +39,6 @@ public class Rotor extends  TranslationContext {
         }
     }
 
-    //Needs to be changed. This is old
     public char translateCharacterForward(char currentCharacter, boolean encrypt){
         return this.localContext.translateForward(currentCharacter, this.currentOffset, encrypt);
     }
