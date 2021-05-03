@@ -4,9 +4,7 @@ public class FileInput {
     private final String Date;
     private final String UsedFor;
 
-
-
-    public FileInput(String fullLine){
+    public FileInput(String fullLine) {
         String[] lineSplit = fullLine.split(",");
         this.Name = lineSplit[0];
         this.Setting = lineSplit[1];
@@ -16,19 +14,19 @@ public class FileInput {
     }
 
     public String getDate() {
-        return Date;
+        return this.Date;
     }
 
     public String getName() {
-        return Name;
+        return this.Name;
     }
 
     public String getSetting() {
-        return Setting;
+        return this.Setting;
     }
 
     public String getUsedFor() {
-        return UsedFor;
+        return this.UsedFor;
     }
 
 }

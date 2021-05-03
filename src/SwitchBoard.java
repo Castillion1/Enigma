@@ -3,8 +3,6 @@ import java.util.ArrayList;
 public class SwitchBoard extends TranslationContext {
     //This is a wrapper around the SwitchBoardWiring class, to ensure it is a singleton.
     private static TranslationContext instance = null;
-    private ArrayList<TranslationPair> plugBoard = new ArrayList<TranslationPair>();
-
     public static TranslationContext getInstance() {
         if (instance == null) {
             instance = new TranslationContext();

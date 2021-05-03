@@ -18,19 +18,9 @@ public class TranslationContext extends EnigmaParts {
         }
     }
 
-    public ArrayList<TranslationPair> getContext() {
-        return this.context;
-    }
-
-    public ArrayList<Character> getSettings(){
-        return this.settings;
-    }
-
     public char translateForward(Character ToTranslate, int offset, boolean encrypt){
-
         int localIndexStore = 0;
-        System.out.println("Before Translation = "+ToTranslate);
-        Character newFinding = alphabet.get(localIndexChange(alphabet.indexOf(ToTranslate), offset, encrypt));//coming in rotation
+        Character newFinding = ToTranslate;
         for(int i =0; i < alphabet.size();i++){
             if(alphabet.get(i).equals(newFinding)){
                 localIndexStore = i;
@@ -42,7 +32,7 @@ public class TranslationContext extends EnigmaParts {
     }
     private int localIndexChange(int localIndex,int offset, boolean encrypt ){
         if(encrypt){
-            if(localIndex+offset>25){//TODO this method of doing the offset is wrong
+            if(localIndex+offset>25){
                 localIndex = (localIndex+offset) - alphabet.size();
             }else{
                 localIndex = localIndex+offset;
@@ -59,7 +49,7 @@ public class TranslationContext extends EnigmaParts {
 
     public char translateBackwards(Character ToTranslate, int offset, boolean encrypt){
         int localIndexStore = 0;
-        Character newFinding = alphabet.get(localIndexChange(alphabet.indexOf(ToTranslate), offset, encrypt));//coming in rotation
+        Character newFinding = ToTranslate;
         for(int i =0; i < alphabet.size();i++){
             if(this.context.get(i).getLinkedTo().getLetter().equals(newFinding)){
                 localIndexStore = i;
@@ -89,17 +79,21 @@ public class TranslationContext extends EnigmaParts {
         }
 
         if ((localOne == null) || (localTwo == null)) {
-            throw new IllegalStateException("The letters provided is not part of the alphabet");
+            throw new IllegalStateException(Text.lettersNotExisting);
         }
 
         localOne.setLinkedTo(localTwo);
-        localOne.setLinkerToIndex(localOneInt);
         if(twoWay){
             localTwo.setLinkedTo(localOne);
-            localTwo.setLinkerToIndex(localTwoInt);
         }
 
 
+    }
+
+    public void emptyTranslations(){
+        for(int i =0; i<alphabet.size();i++){
+            context.get(i).setLinkedTo(context.get(i));
+        }
     }
 
 }
