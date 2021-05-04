@@ -5,6 +5,7 @@ public class FileInput {
     private final String UsedFor;
 
     public FileInput(String fullLine) {
+        System.out.println(fullLine);
         String[] lineSplit = fullLine.split(",");
         this.Name = lineSplit[0];
         this.Setting = lineSplit[1];

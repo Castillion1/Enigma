@@ -14,7 +14,6 @@ public class RotorSelectionScreen extends UIPages {
     public JComponent makeRotorSettingsSelectionPanel(int H, int W, ArrayList<String> choices) {
         this.panel = new JPanel(false);
         this.comboBox = new JComboBox(choices.toArray());
-
         JLabel label = new JLabel(this.text);
         label.setVerticalAlignment(SwingConstants.BOTTOM);
         label.setHorizontalAlignment(SwingConstants.CENTER);

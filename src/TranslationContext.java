@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class TranslationContext extends EnigmaParts {
     private final ArrayList<TranslationPair> context = new ArrayList<>();
     private ArrayList<Character> settings = new ArrayList<>();
-
+    //One of these need to be called, before trying to do any work with the translation context
     public void make(ArrayList<Character> settings) {
         this.settings = settings;
         for (int i = 0; i < alphabet.size(); i++) {
@@ -17,7 +17,7 @@ public class TranslationContext extends EnigmaParts {
             this.context.add(new TranslationPair(alphabet.get(i)));
         }
     }
-
+    //When a message is being translated before the reflector
     public char translateForward(Character ToTranslate, int offset, boolean encrypt){
         int localIndexStore = 0;
         Character newFinding = ToTranslate;
@@ -26,10 +26,12 @@ public class TranslationContext extends EnigmaParts {
                 localIndexStore = i;
             }
         }
+
         localIndexStore = localIndexChange(localIndexStore, offset, encrypt); //leaving rotation
         return this.context.get(localIndexStore).getLinkedTo().getLetter();
 
     }
+    //The logic for combining the index and the offset.
     private int localIndexChange(int localIndex,int offset, boolean encrypt ){
         if(encrypt){
             if(localIndex+offset>25){
@@ -46,7 +48,7 @@ public class TranslationContext extends EnigmaParts {
         }
         return localIndex;
     }
-
+    ////When a message is being translated after the reflector
     public char translateBackwards(Character ToTranslate, int offset, boolean encrypt){
         int localIndexStore = 0;
         Character newFinding = ToTranslate;
@@ -58,28 +60,23 @@ public class TranslationContext extends EnigmaParts {
         localIndexStore = localIndexChange(localIndexStore, offset, encrypt);
         return this.context.get(localIndexStore).getLetter();
     }
-
-    public void setUpTranslation(@NotNull Character One,@NotNull Character Two, boolean twoWay) {
+    //This function takes two Characters and links the correct plugs together.
+    public void setUpTranslation(Character One, Character Two, boolean twoWay) {
         if((One.equals(Two))&&(Two.equals(One))){
             return;
         }
-        //This function takes two Characters and links the correct plugs together.
         TranslationPair localOne = null;
-        int localOneInt = 0;
         TranslationPair localTwo = null;
-        int localTwoInt = 0;
         for (int i = 0; i < alphabet.size(); i++) {
             if (context.get(i).getLetter().equals(One)) {
                 localOne = context.get(i);
-                localOneInt = i;
             } else if (context.get(i).getLetter().equals(Two)) {
                 localTwo = context.get(i);
-                localTwoInt = i;
             }
         }
 
         if ((localOne == null) || (localTwo == null)) {
-            throw new IllegalStateException(Text.lettersNotExisting);
+            throw new IllegalStateException(EnigmaText.lettersNotExisting);
         }
 
         localOne.setLinkedTo(localTwo);
@@ -89,7 +86,7 @@ public class TranslationContext extends EnigmaParts {
 
 
     }
-
+    //Just sets all the linkedTo, to itself.
     public void emptyTranslations(){
         for(int i =0; i<alphabet.size();i++){
             context.get(i).setLinkedTo(context.get(i));

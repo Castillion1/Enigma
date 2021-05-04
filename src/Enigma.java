@@ -6,16 +6,11 @@ public class Enigma {
     private Reflector reflector;
     private ArrayList<Rotor> rotors;
     private TranslationContext board;
-    private ArrayList<Integer> offsets;
-    private ArrayList<String> settings;
 
-    public Enigma(ArrayList<Integer> offsets, ArrayList<String> settings, ArrayList<Integer> notchPositions, Reflector reflector, TranslationContext board) {
-
-        this.offsets = offsets;
-        this.settings = settings;
+    public Enigma(ArrayList<Integer> offsets, ArrayList<String> settings, Reflector reflector, TranslationContext board) {
         this.reflector = reflector;
         this.board = board;
-        setUpRotors(offsets, settings, notchPositions);
+        setUpRotors(offsets, settings);
 
     }
 
@@ -25,13 +20,13 @@ public class Enigma {
         }
     }
 
-    public void setUpRotors(ArrayList<Integer> offsets, ArrayList<String> Settings, ArrayList<Integer> notchPositions) {
+    public void setUpRotors(ArrayList<Integer> offsets, ArrayList<String> Settings) {
         if (offsets.size() != Settings.size()) {
-            throw new IllegalArgumentException(Text.missMatchWithOffsetsAndSettings);
+            throw new IllegalArgumentException(EnigmaText.missMatchWithOffsetsAndSettings);
         } else {
             this.rotors = new ArrayList<>(Settings.size());
             for (int i = 0; i < offsets.size(); i++) {
-                this.rotors.add(i, new Rotor(offsets.get(i), Settings.get(i), notchPositions.get(i)));
+                this.rotors.add(i, new Rotor(offsets.get(i), Settings.get(i)));
             }
             isInitialized = true; // the rotors have been setup now
         }
@@ -45,7 +40,6 @@ public class Enigma {
             for (int j = 0; j < inputCharacters.size(); j++) {
                 output.append(letterTranslate(inputCharacters.get(j), encrypt));
             }
-
 
             return output.toString();
         }

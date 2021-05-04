@@ -1,7 +1,6 @@
-import java.util.ArrayList;
-
 public class SwitchBoard extends TranslationContext {
-    //This is a wrapper around the SwitchBoardWiring class, to ensure it is a singleton.
+    //This is to ensure it is a singleton.
+    //As there should only be 1 SwitchBoard
     private static TranslationContext instance = null;
     public static TranslationContext getInstance() {
         if (instance == null) {

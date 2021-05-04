@@ -1,11 +1,11 @@
-public abstract class Text {
+public abstract class EnigmaText {
     public static String test = "Please select the settings";
     public static String switchBoardText = "<html><p>Please enter your switchboard settings, this can be done by simply entering, for example AB CD will then link A to B and so on, vice versa.</p></html>";
     public static String confirmRotorSettings = "Confirm rotor settings";
     public static String settingsHaveBeenConfirmed = "The settings have been confirmed";
     public static String issueWithSettings = "There is an issue with the settings entered";
 
-    public static String introductionText =  "<html><p>This is an Engima machine simulator, it does allow you to" +
+    public static String introductionText = "<html><p>This is an Engima machine simulator, it does allow you to" +
             " reconstruct the initial machine using 3 rotors but it also allows you to use as many rotors as you like" +
             " and pair rotors from different machines up</p></html>";
     public static String introductionTitle = "Introduction";
@@ -26,7 +26,6 @@ public abstract class Text {
     public static String title = "Enigma Machine simulator";
 
     public static String enterAMessage = "<html><p>Please enter a message </p></html>";
-
 
     public static String numberOfRotorsText = "Please select how many rotors you would like to use";
     public static String selectionOfSettings = "Please select the settings";
