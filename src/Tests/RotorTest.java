@@ -1,3 +1,7 @@
+package Tests;
+
+import code.EnigmaParts;
+import code.Rotor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

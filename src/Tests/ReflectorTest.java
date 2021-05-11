@@ -1,3 +1,6 @@
+package Tests;
+
+import code.Reflector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

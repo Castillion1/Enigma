@@ -1,3 +1,5 @@
+package code;
+
 public class FileInput {
     private final String Name;
     private final String Setting;

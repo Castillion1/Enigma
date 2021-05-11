@@ -1,3 +1,5 @@
+package code;
+
 public class EnigmaText {
     public final static String switchBoardText = "<html><p>Please enter your switchboard settings, this can be done by simply entering, for example AB CD will then link A to B and so on, vice versa.</p></html>";
     public final static String confirmRotorSettings = "Confirm rotor settings";
@@ -30,8 +32,8 @@ public class EnigmaText {
     public final static String selectionOfSettings = "Please select the settings";
     public final static String reflectorDescription = "<html><p>Please select your rotor</p></html>";
 
-    public final static String pathToRotors = "\\src\\RotorSetting.txt";
-    public final static String pathToReflectors = "\\src\\ReflectorSettings.txt";
+    public final static String pathToRotors = "\\RotorSetting.txt";
+    public final static String pathToReflectors = "\\ReflectorSettings.txt";
 
     public final static String lettersNotExisting = "The letters provided is not part of the alphabet";
     public final static String missMatchWithOffsetsAndSettings = "There is a problem with the offsets and settings";

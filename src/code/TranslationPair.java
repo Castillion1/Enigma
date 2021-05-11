@@ -1,3 +1,5 @@
+package code;
+
 public class TranslationPair {
     private final Character Letter;
     private TranslationPair LinkedTo = null;

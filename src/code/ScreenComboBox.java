@@ -1,3 +1,5 @@
+package code;
+
 import javax.swing.*;
 
 public class ScreenComboBox <E> extends JComponent  {

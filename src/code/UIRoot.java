@@ -1,3 +1,5 @@
+package code;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -312,10 +314,11 @@ public class UIRoot extends UIPages {
 
     //Will read the text from the file provided
     private ArrayList<String> readFile(String filePath) {
-        String fullPathMaker = new File(".").getAbsolutePath();
+        String fullPathMaker = new File("").getAbsolutePath();
+//        System.out.println(fullPathMaker);
         ArrayList<String> output = new ArrayList<>();
         String name = fullPathMaker + filePath;
-
+        System.out.println(name);
         BufferedReader reader = null;
         String line;
         try {

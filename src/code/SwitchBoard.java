@@ -1,3 +1,5 @@
+package code;
+
 public class SwitchBoard extends TranslationContext {
     //This is to ensure it is a singleton.
     //As there should only be 1 SwitchBoard
