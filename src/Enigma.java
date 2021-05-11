@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Enigma {
 
-    private static boolean isInitialized = false;
+    private boolean isInitialized = false;
     private Reflector reflector;
     private ArrayList<Rotor> rotors;
     private TranslationContext board;

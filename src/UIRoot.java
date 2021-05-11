@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RotorSelectionUI extends UIPages {
+public class UIRoot extends UIPages {
     private JTabbedPane tabbedPane;
     private JFrame screen;
     private JComponent IntroductionPanel;
@@ -27,7 +27,7 @@ public class RotorSelectionUI extends UIPages {
     private JComboBox reflectorJComboBox;
     private RotorSelectionScreen rotorSelection;
 
-    public RotorSelectionUI() {
+    public UIRoot() {
         super();
     }
 
@@ -143,7 +143,7 @@ public class RotorSelectionUI extends UIPages {
     private void makeReflectorTab() {
         this.reflectorTab = new JPanel(false);
         this.reflectorTab.setLayout(new GridLayout(3, 1));
-        JLabel descriptionLabel = new JLabel("<html><p>Please select your rotor</p></html>");
+        JLabel descriptionLabel = new JLabel(EnigmaText.reflectorDescription);
         descriptionLabel.setHorizontalAlignment(SwingConstants.CENTER);
         this.reflectorTab.add(descriptionLabel);
         ArrayList<String> reflectorSettings = readFile(EnigmaText.pathToReflectors);

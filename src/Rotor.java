@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 
 public class Rotor extends TranslationContext {
-    private ArrayList<Character> rotorSettings = new ArrayList<>();
+    private ArrayList<Character> rotorSettings;
     private ArrayList<TranslationPair> translations = new ArrayList<>();
     private TranslationContext localContext = new TranslationContext();
     private int currentOffset = 0;
-    private int startingOffset;
+    private final int startingOffset;
 
     public Rotor(int startingOffset, String rotorSettings) {
         this.startingOffset = startingOffset;

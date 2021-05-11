@@ -31,6 +31,19 @@ public class TranslationContext extends EnigmaParts {
         return this.context.get(localIndexStore).getLinkedTo().getLetter();
 
     }
+    ////When a message is being translated after the reflector
+    public char translateBackwards(Character ToTranslate, int offset, boolean encrypt){
+        int localIndexStore = 0;
+        Character newFinding = ToTranslate;
+        for(int i =0; i < alphabet.size();i++){
+            if(this.context.get(i).getLinkedTo().getLetter().equals(newFinding)){
+                localIndexStore = i;
+            }
+        }
+        localIndexStore = localIndexChange(localIndexStore, offset, encrypt);
+        return this.context.get(localIndexStore).getLetter();
+    }
+
     //The logic for combining the index and the offset.
     private int localIndexChange(int localIndex,int offset, boolean encrypt ){
         if(encrypt){
@@ -48,21 +61,9 @@ public class TranslationContext extends EnigmaParts {
         }
         return localIndex;
     }
-    ////When a message is being translated after the reflector
-    public char translateBackwards(Character ToTranslate, int offset, boolean encrypt){
-        int localIndexStore = 0;
-        Character newFinding = ToTranslate;
-        for(int i =0; i < alphabet.size();i++){
-            if(this.context.get(i).getLinkedTo().getLetter().equals(newFinding)){
-                localIndexStore = i;
-            }
-        }
-        localIndexStore = localIndexChange(localIndexStore, offset, encrypt);
-        return this.context.get(localIndexStore).getLetter();
-    }
     //This function takes two Characters and links the correct plugs together.
     public void setUpTranslation(Character One, Character Two, boolean twoWay) {
-        if((One.equals(Two))&&(Two.equals(One))){
+        if(One.equals(Two)){
             return;
         }
         TranslationPair localOne = null;
